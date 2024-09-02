@@ -2,6 +2,7 @@
 #define _utils_h_
 
 typedef struct {
+    unsigned qtdDiasSimulacao;
     unsigned tamanhoPopulacao;
     unsigned maxPessoasCirculoSocial;
     unsigned char reinfeccao;
@@ -19,6 +20,7 @@ typedef struct {
     double taxaLetalidade;
 
     double percentualVacinados;
+    double eficaciaVacina;
 
     double agravanteHomem;
     double agravanteMulher;

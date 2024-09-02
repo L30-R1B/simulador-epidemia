@@ -15,7 +15,7 @@ Populacao *criaPopulacao(){
     for(unsigned i = 0; i < varAmbiente->tamanhoPopulacao; i ++){
         P->I[i].vivo = 1;
         P->I[i].doente = 0;
-        P->I[i].imunidade = rand() % 3;
+        P->I[i].imunidade = rand() % 8;
         P->I[i].recuperado = 0;
         P->I[i].vacinado = 0;
         P->I[i].nivelInteracoesSociais = rand() % 8;
@@ -117,16 +117,19 @@ void printaStatusPopulacao(StatusPopulacao *sPop){
     if(sPop == NULL)
         return;
     printf("------------------------------------------------\n");
-    printf("Tamanho população (Atual) : %u\n", sPop->tamanhoPopulacaoAtual);
+    printf("Tamanho população (Atual) : %u\n\n", sPop->tamanhoPopulacaoAtual);
     printf("Número de mortos          : %u\n", sPop->numeroMortosTotal);
     printf("Número de doentes         : %u\n", sPop->numeroDoentes);
-    printf("Número de recuperados     : %u\n", sPop->numeroRecuperados);
+    printf("Número de recuperados     : %u\n\n", sPop->numeroRecuperados);
     printf("Percentual crianças       : %.3lf\n", sPop->percentualCriancas);
     printf("Percentual adolescentes   : %.3lf\n", sPop->percentualAdolescentes);
     printf("Percentual adultos        : %.3lf\n", sPop->percentualAdultos);
-    printf("Percentual idosos         : %.3lf\n", sPop->percentualIdosos);
+    printf("Percentual idosos         : %.3lf\n\n", sPop->percentualIdosos);
     printf("Percentual homens         : %.3lf\n", sPop->percentualHomens);
-    printf("Percentual mulheres       : %.3lf\n", sPop->percentualMulheres);
+    printf("Percentual mulheres       : %.3lf\n\n", sPop->percentualMulheres);
+    printf("Taxa de mortalidade       : %.3lf\n", (sPop->numeroMortosTotal / (double) (sPop->numeroDoentes + sPop->numeroRecuperados)) * 100.0);
+    if(sPop->numeroMortosTotal + sPop->tamanhoPopulacaoAtual >= 100000)
+        printf("Taxa de letalidade        : %.3lf\n", (100000.0 * sPop->numeroMortosTotal) / (sPop->tamanhoPopulacaoAtual + sPop->numeroMortosTotal));
     printf("------------------------------------------------\n");
 }
 

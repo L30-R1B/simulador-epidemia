@@ -103,13 +103,10 @@ void trocaRelacoesIndividuo(ListaRelacoes *listRel, unsigned individuo){
     for(unsigned i = indiceRemocao; i < listRel->LR[individuo].numRelacoes; i ++){
         removeRelacao(listRel, individuo, listRel->LR[individuo].indicesIndividuos[indiceRemocao]);
         removeRelacao(listRel, listRel->LR[individuo].indicesIndividuos[indiceRemocao], individuo);
-
         removeRelacao(listRel, individuo, listRel->LR[individuo].indicesIndividuos[indiceRemocao]);
         removeRelacao(listRel, listRel->LR[individuo].indicesIndividuos[indiceRemocao], individuo);
-
         removeRelacao(listRel, individuo, listRel->LR[individuo].indicesIndividuos[indiceRemocao]);
         removeRelacao(listRel, listRel->LR[individuo].indicesIndividuos[indiceRemocao], individuo);
-
         removeRelacao(listRel, individuo, listRel->LR[individuo].indicesIndividuos[indiceRemocao]);
         removeRelacao(listRel, listRel->LR[individuo].indicesIndividuos[indiceRemocao], individuo);
     }
@@ -157,6 +154,7 @@ void destroiListaRelacoes(ListaRelacoes *listRel){
             continue;
         free(listRel->LR[i].indicesIndividuos);
     }
+
     free(listRel->LR);
     free(listRel);
 }

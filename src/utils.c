@@ -63,6 +63,9 @@ int inicializarVariaveisAmbiente() {
 
     char *valor;
 
+    valor = getenv("QTD_DIAS_SIMULACAO");
+    if (valor) varAmbiente->qtdDiasSimulacao = atoi(valor);
+
     valor = getenv("TAMANHO_POPULACAO");
     if (valor) varAmbiente->tamanhoPopulacao = atoi(valor);
 
@@ -104,6 +107,9 @@ int inicializarVariaveisAmbiente() {
 
     valor = getenv("PERCENTUAL_VACINADOS");
     if (valor) varAmbiente->percentualVacinados = atof(valor);
+
+    valor = getenv("EFICACIA_VACINA");
+    if (valor) varAmbiente->eficaciaVacina = atof(valor);
 
     valor = getenv("AGRAVANTE_HOMEM");
     if (valor) varAmbiente->agravanteHomem = atof(valor);

@@ -14,6 +14,8 @@ typedef struct {
 SimuladorEpidemia *criaSimuladorEpidemia();
 void destroiSimuladorEpidemia(SimuladorEpidemia *sE);
 
+void resetarProgVacinacao();
+void progrideVacinacao(SimuladorEpidemia *se);
 void iniciaEpidemia(SimuladorEpidemia *se, unsigned numInicialInfectados);
 void progrideEpidemia(SimuladorEpidemia *se);
 
