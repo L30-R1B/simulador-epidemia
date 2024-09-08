@@ -7,23 +7,36 @@
 #include "../include/epidemia.h"
 #include "../include/utils.h"
 
-
-int main(){
-    srand(time(NULL));
-    inicializarVariaveisAmbiente();
-
+void realizaSimulacao(){
     SimuladorEpidemia *se = criaSimuladorEpidemia();
+    iniciaArqMortesDiarias();
+    iniciaArqDoentesDiarios();
+    iniciaArqTotalInfectados();
 
     iniciaEpidemia(se, 10);
+    salvarVariaveisAmbiente();
+    if(se->pop->tamanhoPopulacao <= 10000)
+        salvaListaRelacoes(se->listRel);
+    salvarEstatisticaEpidemia(se->statusPop, "1_estatisticasIniciais.txt");
     resetarProgVacinacao();
-
     for(unsigned i = 0; i < varAmbiente->qtdDiasSimulacao; i ++){
-        printf("DIA : %u\n", i);
-        printaStatusPopulacao(se->statusPop);
         progrideEpidemia(se);
         progrideVacinacao(se);
     }
+    salvarEstatisticaEpidemia(se->statusPop, "2_estatisticasFinais.txt");
+
+    finalizaVariaveisAmbiente();
+    plotarGraficos();
 
     destroiSimuladorEpidemia(se);
-    finalizaVariaveisAmbiente();
+}
+
+int main(){
+    char dirNome[64];
+    scanf("%s", dirNome);
+    inicializarVariaveisAmbiente();
+    iniciaDir(dirNome);
+
+    srand(time(NULL));
+    realizaSimulacao();
 }

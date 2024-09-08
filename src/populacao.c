@@ -18,6 +18,7 @@ Populacao *criaPopulacao(){
         P->I[i].imunidade = rand() % 8;
         P->I[i].recuperado = 0;
         P->I[i].vacinado = 0;
+        P->I[i].latencia = varAmbiente->reincidencia;
         P->I[i].nivelInteracoesSociais = rand() % 8;
         P->I[i].diasDoente = 0;
         
@@ -113,6 +114,7 @@ void destroiStatusPopulacao(StatusPopulacao *sPop){
     if(sPop != NULL)
         free(sPop);
 }
+
 void printaStatusPopulacao(StatusPopulacao *sPop){
     if(sPop == NULL)
         return;

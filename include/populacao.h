@@ -11,6 +11,7 @@ typedef struct {
     unsigned char recuperado:1;
     unsigned char imunidade:3;
     unsigned char idade:7;
+    unsigned char latencia:8;
     unsigned char diasDoente:5;
     unsigned char nivelInteracoesSociais:3;
 }Individuo, Individuos;

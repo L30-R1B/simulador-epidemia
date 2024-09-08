@@ -6,6 +6,9 @@
 #include "../include/epidemia.h"
 #include "../include/utils.h"
 
+unsigned numMortesDia = 0;
+unsigned numCasosDia = 0;
+
 SimuladorEpidemia *criaSimuladorEpidemia(){
     SimuladorEpidemia *sE = (SimuladorEpidemia*) malloc(sizeof(SimuladorEpidemia));
 
@@ -18,7 +21,6 @@ SimuladorEpidemia *criaSimuladorEpidemia(){
 }
 
 void destroiSimuladorEpidemia(SimuladorEpidemia *sE){
-
     if(sE == NULL)
         return;
 
@@ -39,31 +41,53 @@ void iniciaEpidemia(SimuladorEpidemia *se, unsigned numInicialInfectados){
     }
 }
 
-void transmite(SimuladorEpidemia *se, unsigned individuo){
-    if(!varAmbiente->reinfeccao && se->pop->I[individuo].recuperado)
+void transmite(SimuladorEpidemia *se, unsigned individuo) {
+    if (!se->pop->I[individuo].vivo || se->pop->I[individuo].doente){
         return;
-    if(se->pop->I[individuo].doente)
-        return;
-    if(se->pop->I[individuo].vivo){
-        se->pop->I[individuo].doente = 1;
-        se->statusPop->numeroDoentes ++;
     }
+    if (varAmbiente->reinfeccao) {   
+        if(se->pop->I[individuo].recuperado){
+            if(!se->pop->I[individuo].latencia){
+                se->pop->I[individuo].doente = 1;
+                se->statusPop->numeroDoentes++;
+                numCasosDia++;
+            }else{ 
+                se->pop->I[individuo].latencia --;
+            }
+        }
+    }
+    if (se->pop->I[individuo].recuperado)
+        return;
+    se->pop->I[individuo].doente = 1;
+    se->statusPop->numeroDoentes++;
+    numCasosDia++;
 }
 
-unsigned numVacinado;
+
+unsigned qtdVacinados;
 void resetarProgVacinacao(){
-    numVacinado = 0;
+    qtdVacinados = 0;
 }
 
-void progrideVacinacao(SimuladorEpidemia *se){
-    unsigned numTotalVacinados = ((varAmbiente->percentualVacinados / 100) * se->pop->tamanhoPopulacao);
-    if(numVacinado > (se->pop->tamanhoPopulacao - 1 - (numTotalVacinados/100)))
+void progrideVacinacao(SimuladorEpidemia *se) {
+    if(se->diasPassados < 30)
         return;
-    unsigned individuoAtual;
-    for(individuoAtual = numVacinado; individuoAtual < ((numTotalVacinados/100)+numVacinado); individuoAtual ++){
-        se->pop->I[individuoAtual].vacinado = 1;
+    unsigned numTotalVacinados = (se->pop->tamanhoPopulacao * varAmbiente->percentualVacinados) / 100;
+    if (qtdVacinados >= se->pop->tamanhoPopulacao - 1)
+        return;
+
+    unsigned numRestantes = numTotalVacinados - qtdVacinados;
+    unsigned vacinasHoje = (numTotalVacinados/30);
+    if (vacinasHoje > numRestantes) {
+        vacinasHoje = numRestantes;
     }
-    numVacinado = individuoAtual;
+    
+    for (unsigned i = 0; i < vacinasHoje; i++) {
+        if (qtdVacinados >= se->pop->tamanhoPopulacao)
+            break;
+        se->pop->I[qtdVacinados].vacinado = 1;
+        qtdVacinados ++;
+    }
 }
 
 void progrideEpidemia(SimuladorEpidemia *se){
@@ -71,12 +95,21 @@ void progrideEpidemia(SimuladorEpidemia *se){
     double agravante;
     double probabilidadeMorte;
 
+    numMortesDia = 0;
+    numCasosDia = 0;
+
     for(unsigned individuoAtual = 0; individuoAtual < se->pop->tamanhoPopulacao; individuoAtual ++){
         if(!se->pop->I[individuoAtual].vivo)
             continue;
         
         if(se->pop->I[individuoAtual].doente){
-            double taxaTransmissao = (varAmbiente->taxaTransmissao * (se->pop->I[individuoAtual].vacinado ? (1.0 - (varAmbiente->eficaciaVacina/100.0)) : 1.0) * ( 1.0 - ((se->pop->I[individuoAtual].imunidade / 10.0)))) / (varAmbiente->taxaTransmissao * 1.2);
+            double taxaTransmissao = (varAmbiente->taxaTransmissao 
+                        * (se->pop->I[individuoAtual].vacinado ? 
+                            (1.0 - (varAmbiente->eficaciaVacina / 100.0)) : 1.0)
+                        * (1.0 - (se->pop->I[individuoAtual].imunidade / 100.0)));
+
+            if(se->pop->I[individuoAtual].diasDoente > 5)
+                taxaTransmissao = 0.0;
 
             for(unsigned relacaoAtual = 0; relacaoAtual < se->listRel->LR[individuoAtual].numRelacoes; relacaoAtual ++){
                 percentual = (rand() % 100000) / 1000.0;
@@ -85,30 +118,37 @@ void progrideEpidemia(SimuladorEpidemia *se){
                 }
             }
             if(se->pop->I[individuoAtual].diasDoente >= (rand() % 7 + 10)){
+                percentual = (rand() % 10000) / 100.0;
+        
+                agravante = (varAmbiente->agravanteIdade * se->pop->I[individuoAtual].idade) 
+                            * (se->pop->I[individuoAtual].sexo ? varAmbiente->agravanteHomem : varAmbiente->agravanteMulher) 
+                            * (varAmbiente->agravanteComorbidade * (se->pop->I[individuoAtual].possuiCondicaoAgravante ? 2.5 : 1.0));
+        
+                probabilidadeMorte = ((varAmbiente->taxaLetalidade/100) * agravante * (se->pop->I[individuoAtual].vacinado ? 
+                                        (1.0 - (varAmbiente->eficaciaVacina/100.0)) : 1.0))*2.3;
+
+                if(percentual <= probabilidadeMorte){
+                    se->pop->I[individuoAtual].vivo = 0;
+                    se->listRel->LR[individuoAtual].vivo = 0;
+                    se->statusPop->numeroDoentes --;
+                    numMortesDia ++;
+                    atualizaStatusPopulacao(se->statusPop, se->pop->I[individuoAtual]);
+                    continue;
+                }
+                
                 se->pop->I[individuoAtual].diasDoente = 0;
                 se->pop->I[individuoAtual].doente = 0;
                 se->pop->I[individuoAtual].recuperado = 1;
+                se->pop->I[individuoAtual].latencia = varAmbiente->reincidencia;
                 se->statusPop->numeroRecuperados ++;
                 se->statusPop->numeroDoentes --;
-                continue;
-            }
-
-            percentual = (rand() % 10000) / 100.0;
-    
-            agravante = (varAmbiente->agravanteIdade * se->pop->I[individuoAtual].idade) * (se->pop->I[individuoAtual].sexo ? varAmbiente->agravanteHomem : varAmbiente->agravanteMulher) * (varAmbiente->agravanteComorbidade * (se->pop->I[individuoAtual].possuiCondicaoAgravante ? 2.5 : 1.0));
-    
-            probabilidadeMorte = varAmbiente->taxaMortalidade * agravante * (se->pop->I[individuoAtual].vacinado ? (1.0 - (varAmbiente->eficaciaVacina/100.0)) : 1.0);
-
-            if(percentual <= probabilidadeMorte){
-                se->pop->I[individuoAtual].vivo = 0;
-                se->listRel->LR[individuoAtual].vivo = 0;
-                se->statusPop->numeroDoentes --;
-
-                atualizaStatusPopulacao(se->statusPop, se->pop->I[individuoAtual]);
-                continue;
             }
 
             se->pop->I[individuoAtual].diasDoente ++;
         }
     }
+    adicionaInfoMortesDiaria(numMortesDia, se->diasPassados);
+    adicionaInfoNovosCasosDiario(numCasosDia, se->diasPassados);
+    adicionaInfoTotalCasos(se->statusPop->numeroDoentes, se->diasPassados);
+    se->diasPassados ++;
 }

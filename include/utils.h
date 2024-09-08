@@ -1,6 +1,9 @@
 #ifndef _utils_h_
 #define _utils_h_
 
+#include <stdlib.h>
+#include "relacoes.h"
+
 typedef struct {
     unsigned qtdDiasSimulacao;
     unsigned tamanhoPopulacao;
@@ -16,11 +19,11 @@ typedef struct {
     double percentualMulheres;
 
     double taxaTransmissao;
-    double taxaMortalidade;
     double taxaLetalidade;
 
     double percentualVacinados;
     double eficaciaVacina;
+    int reincidencia;
 
     double agravanteHomem;
     double agravanteMulher;
@@ -29,6 +32,23 @@ typedef struct {
 }VariaveisAmbiente;
 
 extern VariaveisAmbiente *varAmbiente;
+
+extern FILE *arqOutput;
+
+void iniciaDir(char *dir);
+void iniciaArqMortesDiarias();
+void iniciaArqDoentesDiarios();
+void iniciaArqTotalInfectados();
+
+void adicionaInfoMortesDiaria(unsigned numMortes, unsigned dia);
+void adicionaInfoNovosCasosDiario(unsigned numNovosCasos, unsigned dia);
+void adicionaInfoTotalCasos(unsigned numNovosCasos, unsigned dia);
+
+void salvaListaRelacoes(void *list);
+void salvarEstatisticaEpidemia(void *info, char *fileName);
+void salvarVariaveisAmbiente();
+
+void plotarGraficos();
 
 int inicializarVariaveisAmbiente();
 void finalizaVariaveisAmbiente();

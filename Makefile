@@ -21,7 +21,7 @@ OBJECTS = $(patsubst src/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
 # Regra principal para construir o executável
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -lm -o $(TARGET)
+	$(CC) $(CFLAGS) $(OBJECTS) -lm -lz -o $(TARGET)
 
 # Regra para construir arquivos objeto a partir de arquivos fonte
 $(OBJDIR)/%.o: src/%.c $(HEADERS)
