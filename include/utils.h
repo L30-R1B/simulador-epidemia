@@ -43,6 +43,7 @@ void iniciaArqTotalInfectados();
 void adicionaInfoMortesDiaria(unsigned numMortes, unsigned dia);
 void adicionaInfoNovosCasosDiario(unsigned numNovosCasos, unsigned dia);
 void adicionaInfoTotalCasos(unsigned numNovosCasos, unsigned dia);
+void calculaCentralidade();
 
 void salvaListaRelacoes(void *list);
 void salvarEstatisticaEpidemia(void *info, char *fileName);

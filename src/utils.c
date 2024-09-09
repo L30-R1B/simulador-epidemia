@@ -261,6 +261,19 @@ void salvaListaRelacoes(void *list){
     free(buffer);
 }
 
+void calculaCentralidade(){
+    printf("INI\n");
+    buffer = (char*) malloc(1024);
+    sprintf(buffer, "./analise-redes %s/6_listaAdjacencia.txt.gz %s/centralidade data", dirNome, dirNome);
+    system(buffer);
+    printf("FIM\n");
+
+    sprintf(buffer, "rm %s/6_listaAdjacencia.txt.gz", dirNome);
+    system(buffer);
+
+    free(buffer);
+}
+
 void salvarEstatisticaEpidemia(void *info, char *fName) {
     StatusPopulacao *sPop = (StatusPopulacao*) info;
 

@@ -13,10 +13,12 @@ void realizaSimulacao(){
     iniciaArqDoentesDiarios();
     iniciaArqTotalInfectados();
 
-    iniciaEpidemia(se, 10);
+    iniciaEpidemia(se, 25);
     salvarVariaveisAmbiente();
-    if(se->pop->tamanhoPopulacao <= 10000)
+    if(se->pop->tamanhoPopulacao <= 1000){
         salvaListaRelacoes(se->listRel);
+        calculaCentralidade();
+    }
     salvarEstatisticaEpidemia(se->statusPop, "1_estatisticasIniciais.txt");
     resetarProgVacinacao();
     for(unsigned i = 0; i < varAmbiente->qtdDiasSimulacao; i ++){

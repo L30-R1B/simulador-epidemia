@@ -1,7 +1,7 @@
 ------------------------------------------------
 Quantidade de Dias da Simulação : 500
-Tamanho da População            : 100000
-Máximo de Pessoas no Círculo Social : 50
+Tamanho da População            : 1000000
+Máximo de Pessoas no Círculo Social : 25
 Reinfecção Permitida (0 ou 1)   : 1
 
 --- Percentuais por Faixa Etária ---
