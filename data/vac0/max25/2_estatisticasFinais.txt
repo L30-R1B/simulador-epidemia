@@ -1,0 +1,18 @@
+------------------------------------------------
+Tamanho população         : 996946
+
+Número de mortos          : 3054
+Número de doentes         : 1502
+Número de recuperações    : 172032
+
+Percentual crianças       : 18.084
+Percentual adolescentes   : 17.533
+Percentual adultos        : 40.450
+Percentual idosos         : 23.933
+
+Percentual homens         : 48.663
+Percentual mulheres       : 51.337
+
+Taxa de mortalidade       : 1.760
+Taxa de letalidade        : 305.400
+------------------------------------------------

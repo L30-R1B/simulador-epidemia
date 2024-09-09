@@ -337,6 +337,7 @@ void salvarVariaveisAmbiente() {
     fprintf(file, "Tamanho da População            : %u\n", varAmbiente->tamanhoPopulacao);
     fprintf(file, "Máximo de Pessoas no Círculo Social : %u\n", varAmbiente->maxPessoasCirculoSocial);
     fprintf(file, "Reinfecção Permitida (0 ou 1)   : %u\n", varAmbiente->reinfeccao);
+    fprintf(file, "Tempo em dias até reinfecção (0 a 255) : %u\n", varAmbiente->reincidencia);    
     
     fprintf(file, "\n--- Percentuais por Faixa Etária ---\n");
     fprintf(file, "Percentual de Crianças          : %.3lf\n", varAmbiente->percentualCriancas);

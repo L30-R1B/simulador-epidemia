@@ -1,0 +1,32 @@
+------------------------------------------------
+Quantidade de Dias da Simulação : 500
+Tamanho da População            : 1000000
+Máximo de Pessoas no Círculo Social : 25
+Reinfecção Permitida (0 ou 1)   : 1
+Tempo em dias até reinfecção (0 a 255) : 60
+
+--- Percentuais por Faixa Etária ---
+Percentual de Crianças          : 15.500
+Percentual de Adolescentes      : 20.000
+Percentual de Adultos           : 40.500
+Percentual de Idosos            : 24.000
+
+--- Outros Percentuais ---
+Percentual de Pessoas com Comorbidade : 10.000
+Percentual de Homens                 : 48.500
+Percentual de Mulheres               : 51.500
+
+--- Taxas ---
+Taxa de Transmissão           : 1.120
+Taxa de Letalidade            : 1.800
+
+--- Vacinação ---
+Percentual de Vacinados       : 75.000
+Eficácia da Vacina            : 90.000
+
+--- Agravantes ---
+Agravante para Homens         : 1.000
+Agravante para Mulheres       : 1.000
+Agravante por Idade           : 1.000
+Agravante por Comorbidade     : 1.000
+------------------------------------------------

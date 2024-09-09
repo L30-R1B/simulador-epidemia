@@ -1,0 +1,18 @@
+------------------------------------------------
+Tamanho população         : 1000000
+
+Número de mortos          : 0
+Número de doentes         : 25
+Número de recuperações    : 0
+
+Percentual crianças       : 18.037
+Percentual adolescentes   : 17.500
+Percentual adultos        : 40.455
+Percentual idosos         : 24.007
+
+Percentual homens         : 48.660
+Percentual mulheres       : 51.340
+
+Taxa de mortalidade       : 0.000
+Taxa de letalidade        : 0.000
+------------------------------------------------
